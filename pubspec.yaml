@@ -5,5 +5,5 @@ dependencies:
   browser: any
   js: any
   stream: any
-  xml: any
-  json_object: any
+  xml: 0.4.7
+  json_object: 0.3.5
