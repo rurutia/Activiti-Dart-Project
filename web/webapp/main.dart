@@ -1,4 +1,4 @@
-// Server side code
+﻿// Server side code
 library staff_management;
 
 import "dart:json" as Json;
@@ -7,7 +7,6 @@ import "dart:uri";
 import "dart:async";
 import 'package:stream/stream.dart';
 import "package:xml/xml.dart";
-import 'package:json_object/json_object.dart';
 import 'package:rikulo_commons/io.dart';
 
 part "config.dart";
