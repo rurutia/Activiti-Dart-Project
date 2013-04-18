@@ -1,5 +1,5 @@
-﻿// Server side code
-library staff_management;
+// Server side code
+library activiti_dart;
 
 import "dart:json" as Json;
 import "dart:io";
