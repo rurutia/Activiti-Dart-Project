@@ -1,0 +1,9 @@
+name: ActivitiDart
+version: 1.0.0
+description: Activiti Dart Project
+dependencies:
+  browser: any
+  js: any
+  stream: any
+  xml: any
+  json_object: any

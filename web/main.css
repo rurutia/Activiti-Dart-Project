@@ -1,0 +1,200 @@
+/* Reset default browser CSS. */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  border: 0;
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+/* global styles */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+h1 {
+  font-size: 28px;
+  margin: 20px 0 10px;
+}
+h2 {
+  font-size: 22px;
+  margin: 16px 0 8px;
+}
+h3 {
+  font-size: 18px;
+  margin: 13px 0 6px;
+}
+label {
+  font-size: 14px;
+}
+button {
+  font-size: 16px;
+}
+section {
+  margin: 0 auto;
+  width: 960px;
+}
+tr:hover {
+  background-color: #ddd;
+}
+.align-left {
+  float: left;
+  padding: 8px 0 0 0;
+}
+.align-right {
+  float: right;
+  padding: 8px 0 0 0;
+}
+.clear {
+  clear: both;
+}
+.warning {
+  color: #ff0000; 
+}
+.display-inline {
+  display: inline;
+}
+/* title styles */
+#app-title {
+  text-align: center;
+}
+/* search section */
+#search-container {
+  margin: 0 auto;
+  padding: 10px 0 10px 0;
+  width: 800px;
+}
+/* content section */
+#content {
+  position: relative;
+  height: 350px; 
+}
+#loadAnimation {
+   margin: 0 auto;
+   width: 332px; 
+   height: 150px; 
+   background-image: url('loading.gif');
+   background-position: 0px -100px;
+}
+/* staff table styles */
+#staff-table {
+  margin: 0 auto;
+}
+#staff-table th {
+  padding:5px;
+  width:170px;
+  border:1px solid black;
+  font-size: 18px;
+  font-weight: bold; 
+  background-color: #bbb;
+}
+#staff-table td {
+  padding:5px;
+  width:160px;
+  border:1px solid black;
+  font-size: 16px;
+  text-align: center;
+}
+.line-through {
+  background: transparent url('http://davidrhysthomas.co.uk/linked/strike.png') 0 50% repeat-x;
+}
+.keyword-found {
+  color: #ff0000;
+  font-weight:bold;
+ }
+/* new staff section */
+#add-staff-container {
+  display: none;
+} 
+table#new-staff-table td {
+  padding:5px;
+}
+/* record command section */
+#search-container {
+  margin: 0 auto;
+  width: 900px;
+}
+#displayAll, #add, #search, #delete, #recover, #mongoDBbtn {
+  background-color:  rgb(30, 144, 255);
+  color: #fff;
+}
+#add {
+	margin-right:30px;
+}
+#delete, #recover {
+    float: right;
+    padding-left:10px;
+}
+/* control section */
+#control-container {
+  margin: 0 auto;
+  padding: 10px 0 30px 0;
+  width: 680px;
+}
+#pagination-container {
+  margin: 0 auto;
+  padding: 10px 0 10px 0;
+  width: 550px;
+  text-align: center;
+}
+a.page-link, a.page-link:visited {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 10px 0 10px;
+  padding: 3px 5px 0px 5px;
+}
+a.page-link:hover {
+  color: #ff0000;
+  background: #87a3fe;
+}
+.page-link-highlight {
+  color: #ffffff;
+  background-color: rgb(0, 114, 197);
+}
+button#previous, button#next {
+  width: 105px;
+}
+#number-per-page-container {
+  text-align: center;
+}
+#total-count {
+  margin-right: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+/* mongoDB section */
+#mongoDB-container {
+  margin: 0 auto;
+  width: 950px;
+}
+/* debug section */
+#debug-container {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  width: 950px;
+  background-color: #2b66c8;
+  color: #fff;
+  border: 2px solid #9a9a9a;
+}
+.debug-title {
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 0;
+  margin: 0;
+  background-color: #eb66c8;
+}
+.debug-info {
+  padding-top: 10px;
+}
+
+ 
