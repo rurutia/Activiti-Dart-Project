@@ -47,6 +47,12 @@ section {
 tr:hover {
   background-color: #ddd;
 }
+.isShown {
+  display: block;
+}
+.isHidden {
+  display: none;
+}
 .align-left {
   float: left;
   padding: 8px 0 0 0;
@@ -64,61 +70,63 @@ tr:hover {
 .display-inline {
   display: inline;
 }
+.test-button {
+  background-color:  rgb(30, 144, 255);
+  color: #fff;
+}
 /* title styles */
 #app-title {
   text-align: center;
 }
-/* search section */
-#search-container {
-  margin: 0 auto;
-  padding: 10px 0 10px 0;
-  width: 800px;
-}
+
 /* content section */
 #content {
   position: relative;
-  height: 350px; 
+  height: 250px; 
+}
+#rest-url-input {
+  width: 950px;
+  height: 40px;
+  background-color: rgb(250, 250, 250);
+  border: medium none;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+#rest-url {
+  margin-top: 5px;
+  height: 28px;
+  width: 600px;
+  font-size: 16px;
+  border-color: rgba(82, 168, 236, 0.8);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(82, 168, 236, 0.6);
 }
 #loadAnimation {
    margin: 0 auto;
+   margin-top: 20px;
    width: 332px; 
    height: 150px; 
    background-image: url('loading.gif');
    background-position: 0px -100px;
 }
-/* staff table styles */
-#staff-table {
+/* result section */
+#result-container {
   margin: 0 auto;
+  margin-bottom: 20px;
+  width: 950px;
+  background-color: #2b66c8;
+  color: #fff;
+  border: 2px solid #9a9a9a;
 }
-#staff-table th {
-  padding:5px;
-  width:170px;
-  border:1px solid black;
-  font-size: 18px;
-  font-weight: bold; 
-  background-color: #bbb;
+.result-title {
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 0;
+  margin: 0;
+  background-color: #eb66c8;
 }
-#staff-table td {
-  padding:5px;
-  width:160px;
-  border:1px solid black;
-  font-size: 16px;
-  text-align: center;
+.result-info {
+  padding-top: 10px;
 }
-.line-through {
-  background: transparent url('http://davidrhysthomas.co.uk/linked/strike.png') 0 50% repeat-x;
-}
-.keyword-found {
-  color: #ff0000;
-  font-weight:bold;
- }
-/* new staff section */
-#add-staff-container {
-  display: none;
-} 
-table#new-staff-table td {
-  padding:5px;
-}
+
 /* record command section */
 #search-container {
   margin: 0 auto;
@@ -177,24 +185,6 @@ button#previous, button#next {
   margin: 0 auto;
   width: 950px;
 }
-/* debug section */
-#debug-container {
-  margin: 0 auto;
-  margin-bottom: 20px;
-  width: 950px;
-  background-color: #2b66c8;
-  color: #fff;
-  border: 2px solid #9a9a9a;
-}
-.debug-title {
-  border-top: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  padding: 0;
-  margin: 0;
-  background-color: #eb66c8;
-}
-.debug-info {
-  padding-top: 10px;
-}
+
 
  

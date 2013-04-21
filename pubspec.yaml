@@ -4,5 +4,5 @@ description: Activiti Dart Project
 dependencies:
   browser: any
   js: any
-  stream: any
-  xml: any
+  json_object: any
+  stream:

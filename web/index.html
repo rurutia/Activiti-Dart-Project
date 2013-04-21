@@ -7,12 +7,44 @@
   <body>
    <section id="content" >
        <h1 id="app-title">Activiti Dart Rest API Call Demo</h1>
-       <button id="add">Rest Call - Process Engine</button>
+       <div id="rest-url-input">
+         <div class="align-left">
+           Method 
+           <select id="request-method">
+             <option value="GET">GET</option>
+             <option value="POST">POST</option>
+           </select>
+           Activiti Rest URL: 
+         </div>
+        <!-- <div id="rest-url" class="align-left" contenteditable="true"></div> -->
+          <select id="rest-url" class="align-left">
+             <option value="http://tc1027.metawerx.com.au/activiti-rest/service/process-engine">
+               http://tc1027.metawerx.com.au/activiti-rest/service/process-engine</option>
+             <option value="http://tc1027.metawerx.com.au/activiti-rest/service/deployments?start=0&size=2">
+               http://tc1027.metawerx.com.au/activiti-rest/service/deployments?start=0&size=2</option>
+           </select>
+         <div id="submit" class="align-left">
+           <button id="send" class="test-button" >Send</button>
+         </div> 
+       </div>
+       <div class="clear"></div>
+   
+       <div id="loadAnimation" class="isHidden"></div>
    </section>
+   
+      <section id="result" >
+       <div>
+         <h3 class="display-inline">Raw Rest Service Response</h3>
+         <button id="clearDebugBtn">Clear</button>
+       </div>
+       <div id="result-container" >
+         <h3 class="result-title">JSON response from server</h3>
+         <div id="result-content" class="result-info"></div>
+       </div>
+     </section>
        
   <script src="../packages/browser/dart.js"></script>   
   <script type="application/dart" src="activiti.dart"></script>
   
-</p>
-  </body>
+ </body>
 </html>

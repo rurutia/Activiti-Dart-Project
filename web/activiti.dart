@@ -4,6 +4,7 @@ library activiti_dart_client;
 import "dart:html";
 import "dart:json" as Json;
 import "dart:uri";
+import "dart:async";
 import "package:json_object/json_object.dart";
 
 part "controller.dart";

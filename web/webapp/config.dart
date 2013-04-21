@@ -1,7 +1,8 @@
 //Configuration
-part of staff_management;
+part of activiti_dart;
 
 //URI mapping
 var _mapping = {
-  "/restapi1-process-engine": process_engine
+  "/getRestService": getRestService,
+  "/show-rest-result": show_result
 };
