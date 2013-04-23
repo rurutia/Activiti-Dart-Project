@@ -4450,6 +4450,7 @@ $$._ListRangeIteratorImpl = {"": "Object;_liblib3$_source,_liblib3$_offset,_end"
 $$.AppController = {"": "Object;_view<",
   setup_ui$0: function() {
     $.get$onClick$x(document.querySelector("#clearResultBtn")).listen$1(new $.AppController_setup_ui_anon(this));
+    $.get$onClick$x(document.querySelector("#testRestBodyBtn")).listen$1(new $.AppController_setup_ui_anon0());
   },
   load_initial_data$0: function() {
     $.get$onClick$x(document.querySelector("#send")).listen$1(new $.AppController_load_initial_data_anon(this));
@@ -4477,16 +4478,32 @@ $$.AppController_setup_ui_anon = {"": "Closure;this_0",
   }
 };
 
+$$.AppController_setup_ui_anon0 = {"": "Closure;",
+  call$1: function(e) {
+    var requestBodyElement, t1;
+    requestBodyElement = document.querySelector("#rest-body");
+    t1 = $.getInterceptor$x(requestBodyElement);
+    t1.set$value(requestBodyElement, t1.get$placeholder(requestBodyElement));
+  }
+};
+
 $$.AppController_load_initial_data_anon = {"": "Closure;this_0",
   call$1: function(e) {
-    var url, requestMethod, request, t1;
-    url = "/getRestService?resturl=" + $._uriEncode($.List_KIf, $.trim$0$s($.get$value$x(document.querySelector("#rest-url"))));
+    var restURLElement, requestMethodElement, requestBodyElement, param, requestMethod, requestBody, url, request, t1;
+    restURLElement = document.querySelector("#rest-url");
+    requestMethodElement = document.querySelector("#request-method");
+    requestBodyElement = document.querySelector("#rest-body");
+    param = $._uriEncode($.List_KIf, $.trim$0$s($.get$value$x(restURLElement)));
+    requestMethod = $.get$value$x(requestMethodElement);
+    requestBody = $._uriEncode($.List_KIf, $.get$value$x(requestBodyElement));
+    url = "/getRestService?resturl=" + param + "&method=" + $.S(requestMethod) + "&body=" + requestBody;
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isHidden");
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isShown");
-    requestMethod = document.querySelector("#request-method");
     request = new XMLHttpRequest();
     t1 = $.getInterceptor$x(request);
-    t1.open$3$async(request, $.get$value$x(requestMethod), url, false);
+    t1.open$3$async(request, "GET", url, false);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Accept", "application/json");
     t1 = t1.get$onLoadEnd(request);
     t1.get$first(t1).then$1(new $.AppController_load_initial_data__anon(this.this_0));
     request.send();
@@ -4580,7 +4597,7 @@ $$.Blob = {"": "Interceptor;"};
 
 $$.BodyElement = {"": "Element;"};
 
-$$.ButtonElement = {"": "Element;value="};
+$$.ButtonElement = {"": "Element;value%"};
 
 $$.CDataSection = {"": "Text;"};
 
@@ -4897,7 +4914,7 @@ $$.IFrameElement = {"": "Element;"};
 
 $$.ImageElement = {"": "Element;"};
 
-$$.InputElement = {"": "Element;value=",
+$$.InputElement = {"": "Element;placeholder=,value%",
   $isElement: function() {
     return true;
   },
@@ -4910,7 +4927,7 @@ $$.KeyboardEvent = {"": "UIEvent;"};
 
 $$.KeygenElement = {"": "Element;"};
 
-$$.LIElement = {"": "Element;value="};
+$$.LIElement = {"": "Element;value%"};
 
 $$.LabelElement = {"": "Element;"};
 
@@ -4938,7 +4955,7 @@ $$.MessageEvent = {"": "Event;"};
 
 $$.MetaElement = {"": "Element;"};
 
-$$.MeterElement = {"": "Element;value="};
+$$.MeterElement = {"": "Element;value%"};
 
 $$.ModElement = {"": "Element;"};
 
@@ -5078,9 +5095,9 @@ $$.ObjectElement = {"": "Element;"};
 
 $$.OptGroupElement = {"": "Element;"};
 
-$$.OptionElement = {"": "Element;value="};
+$$.OptionElement = {"": "Element;value%"};
 
-$$.OutputElement = {"": "Element;value="};
+$$.OutputElement = {"": "Element;value%"};
 
 $$.OverflowEvent = {"": "Event;"};
 
@@ -5088,7 +5105,7 @@ $$.PageTransitionEvent = {"": "Event;"};
 
 $$.ParagraphElement = {"": "Element;"};
 
-$$.ParamElement = {"": "Element;value="};
+$$.ParamElement = {"": "Element;value%"};
 
 $$.PopStateEvent = {"": "Event;"};
 
@@ -5098,7 +5115,7 @@ $$.PreElement = {"": "Element;"};
 
 $$.ProcessingInstruction = {"": "Node;"};
 
-$$.ProgressElement = {"": "Element;value="};
+$$.ProgressElement = {"": "Element;value%"};
 
 $$.ProgressEvent = {"": "Event;"};
 
@@ -5122,7 +5139,7 @@ $$.ScriptElement = {"": "Element;"};
 
 $$.SecurityPolicyViolationEvent = {"": "Event;"};
 
-$$.SelectElement = {"": "Element;length%,value="};
+$$.SelectElement = {"": "Element;length%,value%"};
 
 $$.ShadowElement = {"": "Element;"};
 
@@ -5158,7 +5175,7 @@ $$.TemplateElement = {"": "Element;"};
 
 $$.Text = {"": "CharacterData;"};
 
-$$.TextAreaElement = {"": "Element;value="};
+$$.TextAreaElement = {"": "Element;placeholder=,value%"};
 
 $$.TextEvent = {"": "UIEvent;"};
 
@@ -7056,10 +7073,12 @@ $._AttributeClassSet$ = function(_element) {
 
 $._uriEncode = function(canonicalTable, text) {
   var byteToHex, result, t1, i, ch, t2, nextCh;
+  if (typeof text !== "string" && (typeof text !== "object" || text === null || text.constructor !== Array && !$.getInterceptor(text).$isJavaScriptIndexingBehavior()))
+    return $._uriEncode$bailout(1, canonicalTable, text);
   byteToHex = new $._uriEncode_anon("0123456789ABCDEF");
   result = $.StringBuffer$("");
-  for (t1 = text.length, i = 0; i < t1; ++i) {
-    ch = $.JSString_methods.codeUnitAt$1(text, i);
+  for (t1 = $.getInterceptor$asx(text), i = 0; i < text.length; ++i) {
+    ch = t1.codeUnitAt$1(text, i);
     if (ch < 128) {
       t2 = $.JSInt_methods.$shr(ch, 4);
       if (t2 < 0 || t2 >= canonicalTable.length)
@@ -7068,18 +7087,18 @@ $._uriEncode = function(canonicalTable, text) {
     } else
       t2 = false;
     if (t2) {
-      if (i < 0)
+      if (i < 0 || i >= text.length)
         throw $.ioore(i);
       result.write$1(text[i]);
     } else {
-      if (i < 0)
+      if (i < 0 || i >= text.length)
         throw $.ioore(i);
-      if (text[i] === " ")
+      if ($.$eq(text[i], " ") === true)
         result.write$1("+");
       else {
         if (ch >= 55296 && ch < 56320) {
           ++i;
-          nextCh = t1 === i ? 0 : $.JSString_methods.codeUnitAt$1(text, i);
+          nextCh = text.length === i ? 0 : t1.codeUnitAt$1(text, i);
           if (nextCh >= 56320 && nextCh < 57344)
             ch = 65536 + (ch - 55296 << 10 >>> 0) + (nextCh - 56320);
           else
@@ -7088,6 +7107,39 @@ $._uriEncode = function(canonicalTable, text) {
         for (t2 = $.JSArray_methods.get$iterator($.codepointsToUtf8([ch], 0, null)); t2.moveNext$0();)
           result.write$1(byteToHex.call$1(t2.get$current()));
       }
+    }
+  }
+  return result.toString$0(result);
+};
+
+$._uriEncode$bailout = function(state0, canonicalTable, text) {
+  var byteToHex, result, t1, i, ch, t2, nextCh;
+  byteToHex = new $._uriEncode_anon("0123456789ABCDEF");
+  result = $.StringBuffer$("");
+  for (t1 = $.getInterceptor$asx(text), i = 0; $.JSNumber_methods.$lt(i, t1.get$length(text)); ++i) {
+    ch = t1.codeUnitAt$1(text, i);
+    if (ch < 128) {
+      t2 = $.JSInt_methods.$shr(ch, 4);
+      if (t2 < 0 || t2 >= canonicalTable.length)
+        throw $.ioore(t2);
+      t2 = $.$and$n(canonicalTable[t2], $.JSInt_methods.$shl(1, ch & 15)) !== 0;
+    } else
+      t2 = false;
+    if (t2)
+      result.write$1(t1.$index(text, i));
+    else if ($.$eq(t1.$index(text, i), " ") === true)
+      result.write$1("+");
+    else {
+      if (ch >= 55296 && ch < 56320) {
+        ++i;
+        nextCh = $.$eq(t1.get$length(text), i) === true ? 0 : t1.codeUnitAt$1(text, i);
+        if (nextCh >= 56320 && nextCh < 57344)
+          ch = 65536 + (ch - 55296 << 10 >>> 0) + (nextCh - 56320);
+        else
+          throw $.wrapException($.ArgumentError$("Malformed URI"));
+      }
+      for (t2 = $.JSArray_methods.get$iterator($.codepointsToUtf8([ch], 0, null)); t2.moveNext$0();)
+        result.write$1(byteToHex.call$1(t2.get$current()));
     }
   }
   return result.toString$0(result);
@@ -7321,8 +7373,8 @@ $._nullErrorHandler.call$1 = $._nullErrorHandler;
 $._nullErrorHandler.$name = "_nullErrorHandler";
 $._nullDoneHandler.call$0 = $._nullDoneHandler;
 $._nullDoneHandler.$name = "_nullDoneHandler";
-$.$int = {builtin$cls: "int"};
 $.String = {builtin$cls: "String"};
+$.$int = {builtin$cls: "int"};
 $.bool = {builtin$cls: "bool"};
 $._ManagerStub = {builtin$cls: "_ManagerStub"};
 $.num = {builtin$cls: "num"};

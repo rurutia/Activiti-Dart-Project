@@ -17,6 +17,13 @@ class AppController {
     clearBtn.onClick.listen( (e) {
       _view.updateResult("", mode:"NEW");
     });
+    ButtonElement testRestBodyBtn = document.query("#testRestBodyBtn");
+    testRestBodyBtn.onClick.listen( (e) {
+      TextAreaElement requestBodyElement = document.query("#rest-body");
+      requestBodyElement.value = requestBodyElement.placeholder; 
+    });
+    
+    
   }
   
   // initial data load from server
@@ -24,16 +31,21 @@ class AppController {
     ButtonElement sendBtn = document.query("#send");
     sendBtn.onClick.listen((e) {
       SelectElement restURLElement = document.query("#rest-url");
+      SelectElement requestMethodElement = document.query("#request-method");
+      TextAreaElement requestBodyElement = document.query("#rest-body");
       String param = encodeUriComponent(restURLElement.value.trim());
-      String url = "/getRestService?resturl=$param";
+      String requestMethod = requestMethodElement.value;
+      String requestBody = encodeUriComponent(requestBodyElement.value);
+      String url = "/getRestService?resturl=$param&method=$requestMethod&body=$requestBody";
       
       document.query("#loadAnimation").classes.toggle("isHidden");
       document.query("#loadAnimation").classes.toggle("isShown");
       
-      SelectElement requestMethod = document.query("#request-method");
-
+   
       var request = new HttpRequest();
-      request.open(requestMethod.value, url, async: false);
+      request.open('GET', url, async: false);
+      request.setRequestHeader('Content-Type', 'application/json');
+      request.setRequestHeader('Accept', 'application/json');
       request.onLoadEnd.first.then((ProgressEvent e) {
         var duration = new Duration(seconds: 2);
         new Timer(duration, handleTimeout);

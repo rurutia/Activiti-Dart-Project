@@ -29,27 +29,39 @@ void main() {
 }
 
 void getRestService(HttpConnect connect) {
- String url = connect.request.queryParameters['resturl'];
- Future<String>  result = getResponse(url);
+  String method = connect.request.queryParameters['method'];
+  String url = connect.request.queryParameters['resturl'];
+  String body = connect.request.queryParameters['body'];
+
+  Future<String>  result = getResponse(method, url, body);
  
- result.then( (json) {
+  result.then( (json) {
       print(json);
- });
+  });
  
 }
 
-Future<String> getResponse(String url) {
-
+Future<String> getResponse(String method, String url, String body) {
+print(body);
   Completer<String> jsonContent = new Completer<String>();
   HttpClient client = new HttpClient();
   var requestUri = new Uri.fromString(url);
   
-  var conn = client.getUrl(requestUri);
+  var conn = client.openUrl(method, requestUri);
 
   conn.then ((HttpClientRequest request) {
   
     request.headers.add(HttpHeaders.CONTENT_TYPE, Constants.CONTENT_TYPE_JSON);
     request.headers.add("Authorization", Constants.CREDENTIAL_KERMIT);
+    
+    switch( method ) {
+      case Constants.METHOD_GET: break;
+      case Constants.METHOD_POST: 
+//        request.write(Json.stringify(body));
+        request.write(body);
+        break;
+    }
+    
     request.close(); 
         
     request.done.then( (HttpClientResponse response) {
@@ -57,11 +69,18 @@ Future<String> getResponse(String url) {
 
             sb.writeln("response code: ${response.statusCode.toString()}");
             IOUtil.readAsString(response, onError: null).then((body) {         
-              sb.writeln("<br>response body is : $body");
-              var jsonBody = new JsonObject.fromJsonString(body);
+              sb.writeln('response body is        : ' + body);
+              try {
+                  var jsonBody = new JsonObject.fromJsonString(body);
+              } on Exception catch(e) {
+                sb.clear();
+                sb.writeln(body);
+              }
               file.writeAsString(sb.toString()).then((value) {
                 jsonContent.complete(sb.toString());
               });
+              // debug only, print response to console command line
+              print(sb.toString());
                client.close();
             });
 
@@ -73,14 +92,13 @@ Future<String> getResponse(String url) {
 }
 
 void show_result(HttpConnect connect) {
-  String result = file.readAsStringSync();
-  
-  sendResponse(connect, result);
-  
+  String result = file.readAsStringSync();  
+  sendResponse(connect, result);  
 }
 
 void sendResponse(HttpConnect connect, String response, {String type:"json"}) {
   connect.response
+    ..headers.contentType = contentTypes[type]
     ..write(response);
 }
 
