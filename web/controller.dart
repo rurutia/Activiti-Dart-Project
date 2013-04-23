@@ -13,23 +13,10 @@ class AppController {
     
   // setup initial ui
   void setup_ui() {
-         
-  }
-  
-  void handleTimeout() {
-    String url;
-    
-    var request = new HttpRequest();
-    url = "/show-rest-result";
-    request.open('GET', url, async: false);
-    request.onLoadEnd.first.then((ProgressEvent e) { 
-      var response = request.responseText;
-      document.query("#result-content").appendHtml("${response}<br><br>");
-      document.query("#loadAnimation").classes.toggle("isHidden");
-      document.query("#loadAnimation").classes.toggle("isShown");
-    
-    }); 
-    request.send();
+    ButtonElement clearBtn = document.query("#clearResultBtn");
+    clearBtn.onClick.listen( (e) {
+      _view.updateResult("", mode:"NEW");
+    });
   }
   
   // initial data load from server
@@ -42,8 +29,11 @@ class AppController {
       
       document.query("#loadAnimation").classes.toggle("isHidden");
       document.query("#loadAnimation").classes.toggle("isShown");
+      
+      SelectElement requestMethod = document.query("#request-method");
+
       var request = new HttpRequest();
-      request.open('GET', url, async: false);
+      request.open(requestMethod.value, url, async: false);
       request.onLoadEnd.first.then((ProgressEvent e) {
         var duration = new Duration(seconds: 2);
         new Timer(duration, handleTimeout);
@@ -52,9 +42,24 @@ class AppController {
       request.send();
       
 
-    });
+    });    
     
+  }
+  
+  void handleTimeout() {
+    String url;
     
+    var request = new HttpRequest();
+    url = "/show-rest-result";
+    request.open('GET', url, async: false);
+    request.onLoadEnd.first.then((ProgressEvent e) { 
+      var response = request.responseText;
+      _view.updateResult(response);
+      document.query("#loadAnimation").classes.toggle("isHidden");
+      document.query("#loadAnimation").classes.toggle("isShown");
+    
+    }); 
+    request.send();
   }
 
     	

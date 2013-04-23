@@ -9,8 +9,19 @@ class AppViewRenderer {
   AppController get controller => _controller;
   set controller(controller) => this._controller = controller;
   
-  AppViewRenderer(this._controller) {
+  AppViewRenderer(this._controller) {}
+
+  void updateResult(String message, {mode: "APPEND"}) {
+    switch(mode) {
+      case "APPEND":
+        document.query("#result-content").appendHtml("$message<br><br>");
+        break;
+        
+      case "NEW":
+        document.query("#result-content").innerHtml = message;
+        break;
+    }
+    
   }
-
-
-} // class
+  
+}

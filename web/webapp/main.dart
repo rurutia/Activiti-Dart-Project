@@ -10,6 +10,7 @@ import "package:rikulo_commons/io.dart";
 import "package:json_object/json_object.dart";
 
 part "config.dart";
+part "constants.dart";
 
 File file;
 
@@ -47,8 +48,8 @@ Future<String> getResponse(String url) {
 
   conn.then ((HttpClientRequest request) {
   
-    request.headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-    request.headers.add("Authorization", "Basic a2VybWl0Omtlcm1pdA==");
+    request.headers.add(HttpHeaders.CONTENT_TYPE, Constants.CONTENT_TYPE_JSON);
+    request.headers.add("Authorization", Constants.CREDENTIAL_KERMIT);
     request.close(); 
         
     request.done.then( (HttpClientResponse response) {
@@ -56,7 +57,7 @@ Future<String> getResponse(String url) {
 
             sb.writeln("response code: ${response.statusCode.toString()}");
             IOUtil.readAsString(response, onError: null).then((body) {         
-              sb.writeln('response body is        : ' + body);
+              sb.writeln("<br>response body is : $body");
               var jsonBody = new JsonObject.fromJsonString(body);
               file.writeAsString(sb.toString()).then((value) {
                 jsonContent.complete(sb.toString());
