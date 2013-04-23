@@ -4447,8 +4447,12 @@ $$._ListRangeIteratorImpl = {"": "Object;_liblib3$_source,_liblib3$_offset,_end"
   }
 };
 
-$$.AppController = {"": "Object;_view",
+$$.AppController = {"": "Object;_view<",
   setup_ui$0: function() {
+    $.get$onClick$x(document.querySelector("#clearResultBtn")).listen$1(new $.AppController_setup_ui_anon(this));
+  },
+  load_initial_data$0: function() {
+    $.get$onClick$x(document.querySelector("#send")).listen$1(new $.AppController_load_initial_data_anon(this));
   },
   handleTimeout$0: function() {
     var request, t1;
@@ -4456,38 +4460,33 @@ $$.AppController = {"": "Object;_view",
     t1 = $.getInterceptor$x(request);
     t1.open$3$async(request, "GET", "/show-rest-result", false);
     t1 = t1.get$onLoadEnd(request);
-    t1.get$first(t1).then$1(new $.AppController_handleTimeout_anon(request));
+    t1.get$first(t1).then$1(new $.AppController_handleTimeout_anon(this, request));
     request.send();
   },
   get$handleTimeout: function() {
     return new $.BoundClosure$0(this, "handleTimeout$0");
-  },
-  load_initial_data$0: function() {
-    $.get$onClick$x(document.querySelector("#send")).listen$1(new $.AppController_load_initial_data_anon(this));
   },
   AppController$0: function() {
     this._view = $.AppViewRenderer$(this);
   }
 };
 
-$$.AppController_handleTimeout_anon = {"": "Closure;request_0",
+$$.AppController_setup_ui_anon = {"": "Closure;this_0",
   call$1: function(e) {
-    var response = this.request_0.responseText;
-    $.appendHtml$1$x(document.querySelector("#result-content"), $.S(response) + "<br><br>");
-    $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isHidden");
-    $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isShown");
+    this.this_0.get$_view().updateResult$2$mode("", "NEW");
   }
 };
 
 $$.AppController_load_initial_data_anon = {"": "Closure;this_0",
   call$1: function(e) {
-    var url, request, t1;
+    var url, requestMethod, request, t1;
     url = "/getRestService?resturl=" + $._uriEncode($.List_KIf, $.trim$0$s($.get$value$x(document.querySelector("#rest-url"))));
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isHidden");
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isShown");
+    requestMethod = document.querySelector("#request-method");
     request = new XMLHttpRequest();
     t1 = $.getInterceptor$x(request);
-    t1.open$3$async(request, "GET", url, false);
+    t1.open$3$async(request, $.get$value$x(requestMethod), url, false);
     t1 = t1.get$onLoadEnd(request);
     t1.get$first(t1).then$1(new $.AppController_load_initial_data__anon(this.this_0));
     request.send();
@@ -4506,7 +4505,30 @@ $$.AppController_load_initial_data__anon = {"": "Closure;this_1",
   }
 };
 
-$$.AppViewRenderer = {"": "Object;_controller"};
+$$.AppController_handleTimeout_anon = {"": "Closure;this_0,request_1",
+  call$1: function(e) {
+    var response = this.request_1.responseText;
+    this.this_0.get$_view().updateResult$1(response);
+    $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isHidden");
+    $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isShown");
+  }
+};
+
+$$.AppViewRenderer = {"": "Object;_controller",
+  updateResult$2$mode: function(message, mode) {
+    switch (mode) {
+      case "APPEND":
+        $.appendHtml$1$x(document.querySelector("#result-content"), $.S(message) + "<br><br>");
+        break;
+      case "NEW":
+        $.set$innerHtml$x(document.querySelector("#result-content"), message);
+        break;
+    }
+  },
+  updateResult$1: function(message) {
+    return this.updateResult$2$mode(message, "APPEND");
+  }
+};
 
 $$._WorkerStub = {"": "Interceptor;",
   get$id: function(receiver) {
@@ -7299,8 +7321,8 @@ $._nullErrorHandler.call$1 = $._nullErrorHandler;
 $._nullErrorHandler.$name = "_nullErrorHandler";
 $._nullDoneHandler.call$0 = $._nullDoneHandler;
 $._nullDoneHandler.$name = "_nullDoneHandler";
-$.String = {builtin$cls: "String"};
 $.$int = {builtin$cls: "int"};
+$.String = {builtin$cls: "String"};
 $.bool = {builtin$cls: "bool"};
 $._ManagerStub = {builtin$cls: "_ManagerStub"};
 $.num = {builtin$cls: "num"};
