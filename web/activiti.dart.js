@@ -1466,9 +1466,6 @@ $$.JSArray = {"": "Interceptor;",
       $.throwExpression($.UnsupportedError$("set range"));
     $.IterableMixinWorkaround_setRangeList(receiver, start, end, iterable, skipCount);
   },
-  setRange$3: function($receiver, start, end, iterable) {
-    return this.setRange$4($receiver, start, end, iterable, 0);
-  },
   get$isEmpty: function(receiver) {
     return receiver.length === 0;
   },
@@ -1641,18 +1638,6 @@ $$.JSNumber = {"": "Interceptor;",
       return 0;
     return receiver << other >>> 0;
   },
-  $shr: function(receiver, other) {
-    if (other < 0)
-      throw $.wrapException($.ArgumentError$(other));
-    if (receiver > 0) {
-      if (other > 31)
-        return 0;
-      return receiver >>> other;
-    }
-    if (other > 31)
-      other = 31;
-    return receiver >> other >>> 0;
-  },
   $and: function(receiver, other) {
     return (receiver & other) >>> 0;
   },
@@ -1760,6 +1745,36 @@ $$.JSString = {"": "Interceptor;",
     return receiver[index];
   },
   $isString: true
+};
+
+$$._convertJsonToDart_anon = {"": "Closure;",
+  call$2: function(key, value) {
+    return value;
+  }
+};
+
+$$._convertJsonToDart_walk = {"": "Closure;revive_0",
+  call$1: function(e) {
+    var list, t1, i, keys, map, key, proto;
+    if (e == null || typeof e != "object")
+      return e;
+    if (Object.getPrototypeOf(e) === Array.prototype) {
+      list = e;
+      for (t1 = this.revive_0, i = 0; i < list.length; ++i)
+        list[i] = t1.call$2(i, this.call$1(list[i]));
+      return list;
+    }
+    keys = Object.keys(e);
+    map = $.makeLiteralMap([]);
+    for (t1 = this.revive_0, i = 0; i < keys.length; ++i) {
+      key = keys[i];
+      map.$indexSet(map, key, t1.call$2(key, this.call$1(e[key])));
+    }
+    proto = e.__proto__;
+    if (typeof proto !== "undefined" && proto !== Object.prototype)
+      map.$indexSet(map, "__proto__", t1.call$2("__proto__", this.call$1(proto)));
+    return map;
+  }
 };
 
 $$.MetaInfo = {"": "Object;_tag<,_tags,_set<"};
@@ -3391,7 +3406,7 @@ $$.ListQueue = {"": "IterableBase;_table,_head,_tail,_modificationCount",
   }
 };
 
-$$._ListQueueIterator = {"": "Object;_queue,_liblib0$_end,_modificationCount,_liblib0$_position,_liblib0$_current",
+$$._ListQueueIterator = {"": "Object;_queue,_end,_modificationCount,_liblib0$_position,_liblib0$_current",
   get$current: function() {
     return this._liblib0$_current;
   },
@@ -3400,7 +3415,7 @@ $$._ListQueueIterator = {"": "Object;_queue,_liblib0$_end,_modificationCount,_li
     t1 = this._queue;
     t1._checkModification$1(this._modificationCount);
     t2 = this._liblib0$_position;
-    if (t2 === this._liblib0$_end) {
+    if (t2 === this._end) {
       this._liblib0$_current = null;
       return false;
     }
@@ -3425,9 +3440,6 @@ $$.Duration = {"": "Object;_duration<",
   },
   $gt: function(_, other) {
     return this._duration > other.get$_duration();
-  },
-  $le: function(_, other) {
-    return $.JSNumber_methods.$le(this._duration, other.get$_duration());
   },
   $ge: function(_, other) {
     return this._duration >= other.get$_duration();
@@ -3597,6 +3609,14 @@ $$._ExceptionImplementation = {"": "Object;message",
       return "Exception";
     return "Exception: " + $.S(t1);
   },
+  $isException: true
+};
+
+$$.FormatException = {"": "Object;message",
+  toString$0: function(_) {
+    return "FormatException: " + this.message;
+  },
+  $isFormatException: true,
   $isException: true
 };
 
@@ -4370,87 +4390,11 @@ $$._AttributeClassSet = {"": "CssClassSet;_liblib2$_element",
   }
 };
 
-$$._uriEncode_anon = {"": "Closure;hex_0",
-  call$1: function(v) {
-    var t1, t2, t3, t4;
-    t1 = this.hex_0;
-    t2 = $.getInterceptor$n(v);
-    t3 = t2.$shr(v, 4);
-    t4 = t1.length;
-    if (t3 < 0 || t3 >= t4)
-      throw $.ioore(t3);
-    t3 = "%" + $.S(t1[t3]);
-    t2 = t2.$and(v, 15);
-    if (t2 < 0 || t2 >= t4)
-      throw $.ioore(t2);
-    return t3 + $.S(t1[t2]);
-  }
-};
-
-$$._ListRange = {"": "IterableBase;_liblib3$_source,_liblib3$_offset,_liblib3$_length",
-  get$iterator: function(_) {
-    var t1, t2;
-    t1 = this._liblib3$_offset;
-    t2 = this._liblib3$_length;
-    if (typeof t2 !== "number")
-      throw $.iae(t2);
-    return $._ListRangeIteratorImpl$(this._liblib3$_source, t1, t1 + t2);
-  },
-  get$length: function(_) {
-    return this._liblib3$_length;
-  },
-  _ListRange$3: function(source, offset, $length) {
-    var t1, t2, t3;
-    t1 = this._liblib3$_offset;
-    if (t1 < 0 || t1 > this._liblib3$_source.length)
-      throw $.wrapException($.RangeError$value(t1));
-    t2 = this._liblib3$_length;
-    if (t2 != null && $.$lt$n(t2, 0))
-      throw $.wrapException($.RangeError$value(t2));
-    t3 = $.getInterceptor$ns(t2);
-    if (t3.$add(t2, t1) > this._liblib3$_source.length)
-      throw $.wrapException($.RangeError$value(t3.$add(t2, t1)));
-  },
-  $asIterable: function() {
-    return function () { return [null]; };
-  }
-};
-
-$$._ListRangeIteratorImpl = {"": "Object;_liblib3$_source,_liblib3$_offset,_end",
-  get$current: function() {
-    var t1, t2;
-    t1 = this._liblib3$_source;
-    t2 = this._liblib3$_offset;
-    if (t2 !== (t2 | 0))
-      return this.get$current$bailout(1, t1, t2);
-    if (t2 < 0 || t2 >= t1.length)
-      throw $.ioore(t2);
-    return t1[t2];
-  },
-  get$current$bailout: function(state0, t1, t2) {
-    if (t2 !== (t2 | 0))
-      throw $.iae(t2);
-    if (t2 < 0 || t2 >= t1.length)
-      throw $.ioore(t2);
-    return t1[t2];
-  },
-  moveNext$0: function() {
-    var t1 = this._liblib3$_offset + 1;
-    this._liblib3$_offset = t1;
-    return t1 < this._end;
-  },
-  skip$1: function(_, count) {
-    var t1 = this._liblib3$_offset;
-    if (typeof count !== "number")
-      throw $.iae(count);
-    this._liblib3$_offset = t1 + count;
-  }
-};
-
 $$.AppController = {"": "Object;_view<",
   setup_ui$0: function() {
     $.get$onClick$x(document.querySelector("#clearResultBtn")).listen$1(new $.AppController_setup_ui_anon(this));
     $.get$onClick$x(document.querySelector("#testRestBodyBtn")).listen$1(new $.AppController_setup_ui_anon0());
+    $.get$onClick$x(document.querySelector("#testAuthenticationBtn")).listen$1(new $.AppController_setup_ui_anon1());
   },
   load_initial_data$0: function() {
     $.get$onClick$x(document.querySelector("#send")).listen$1(new $.AppController_load_initial_data_anon(this));
@@ -4487,26 +4431,46 @@ $$.AppController_setup_ui_anon0 = {"": "Closure;",
   }
 };
 
+$$.AppController_setup_ui_anon1 = {"": "Closure;",
+  call$1: function(e) {
+    var usernameElement = document.querySelector("#username");
+    $.set$value$x(document.querySelector("#password"), "kermit");
+    $.set$value$x(usernameElement, "kermit");
+  }
+};
+
 $$.AppController_load_initial_data_anon = {"": "Closure;this_0",
   call$1: function(e) {
-    var restURLElement, requestMethodElement, requestBodyElement, param, requestMethod, requestBody, url, request, t1;
+    var requestBody, restURLElement, requestMethodElement, usernameElement, passwordElement, requestBodyElement, param, requestMethod, exception, t1, request, data;
     restURLElement = document.querySelector("#rest-url");
     requestMethodElement = document.querySelector("#request-method");
+    usernameElement = document.querySelector("#username");
+    passwordElement = document.querySelector("#password");
     requestBodyElement = document.querySelector("#rest-body");
-    param = $._uriEncode($.List_KIf, $.trim$0$s($.get$value$x(restURLElement)));
+    param = $.trim$0$s($.get$value$x(restURLElement));
     requestMethod = $.get$value$x(requestMethodElement);
-    requestBody = $._uriEncode($.List_KIf, $.get$value$x(requestBodyElement));
-    url = "/getRestService?resturl=" + param + "&method=" + $.S(requestMethod) + "&body=" + requestBody;
+    requestBody = $.get$value$x(requestBodyElement);
+    try {
+      $.parse(requestBody, null);
+    } catch (exception) {
+      t1 = $.unwrapException(exception);
+      if (typeof t1 === "object" && t1 !== null && !!$.getInterceptor(t1).$isFormatException)
+        requestBody = "{}";
+      else
+        throw exception;
+    }
+
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isHidden");
     $.get$classes$x(document.querySelector("#loadAnimation")).toggle$1("isShown");
     request = new XMLHttpRequest();
     t1 = $.getInterceptor$x(request);
-    t1.open$3$async(request, "GET", url, false);
+    t1.open$2(request, "POST", "/getRestService");
+    data = "{\n                      \"resturl\": \"" + param + "\", \n                      \"method\": \"" + $.S(requestMethod) + "\",\n                      \"authentication\": {\"username\":\"" + $.S($.get$value$x(usernameElement)) + "\", \"password\":\"" + $.S($.get$value$x(passwordElement)) + "\"},\n                      \"body\":" + $.S(requestBody) + " }               \n                    ";
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Accept", "application/json");
     t1 = t1.get$onLoadEnd(request);
     t1.get$first(t1).then$1(new $.AppController_load_initial_data__anon(this.this_0));
-    request.send();
+    request.send(data);
   }
 };
 
@@ -4878,6 +4842,9 @@ $$.HttpRequest = {"": "EventTarget;",
   },
   open$5$async$password$user: function(receiver, method, url, async, password, user) {
     return receiver.open(method, url, async, user, password);
+  },
+  open$2: function($receiver, method, url) {
+    return $receiver.open(method, url);
   },
   open$3$async: function($receiver, method, url, async) {
     return $receiver.open(method, url, async);
@@ -6364,6 +6331,11 @@ $.throwCyclicInit = function(staticName) {
   throw $.wrapException($.RuntimeError$("Cyclic initialization for static " + $.S(staticName)));
 };
 
+$._convertJsonToDart = function(json, reviver) {
+  var revive = reviver == null ? new $._convertJsonToDart_anon() : reviver;
+  return revive.call$2("", new $._convertJsonToDart_walk(revive).call$1(json));
+};
+
 $.typeNameInChrome = function(obj) {
   return $.typeNameInWebKitCommon(obj.constructor.name);
 };
@@ -6914,6 +6886,10 @@ $._ExceptionImplementation$ = function(message) {
   return new $._ExceptionImplementation(message);
 };
 
+$.FormatException$ = function(message) {
+  return new $.FormatException(message);
+};
+
 $.Expando$ = function($name) {
   return new $.Expando($name);
 };
@@ -7067,266 +7043,25 @@ $._Isolate_port = function() {
   return $.lazyPort;
 };
 
+$.parse = function(json, reviver) {
+  var parsed, e, t1, exception;
+  t1 = json;
+  if (!(typeof t1 === "string"))
+    throw $.wrapException($.ArgumentError$(json));
+  parsed = null;
+  try {
+    parsed = JSON.parse(json);
+  } catch (exception) {
+    t1 = $.unwrapException(exception);
+    e = t1;
+    throw $.wrapException($.FormatException$(String(e)));
+  }
+
+  return $._convertJsonToDart(parsed, reviver);
+};
+
 $._AttributeClassSet$ = function(_element) {
   return new $._AttributeClassSet(_element);
-};
-
-$._uriEncode = function(canonicalTable, text) {
-  var byteToHex, result, t1, i, ch, t2, nextCh;
-  if (typeof text !== "string" && (typeof text !== "object" || text === null || text.constructor !== Array && !$.getInterceptor(text).$isJavaScriptIndexingBehavior()))
-    return $._uriEncode$bailout(1, canonicalTable, text);
-  byteToHex = new $._uriEncode_anon("0123456789ABCDEF");
-  result = $.StringBuffer$("");
-  for (t1 = $.getInterceptor$asx(text), i = 0; i < text.length; ++i) {
-    ch = t1.codeUnitAt$1(text, i);
-    if (ch < 128) {
-      t2 = $.JSInt_methods.$shr(ch, 4);
-      if (t2 < 0 || t2 >= canonicalTable.length)
-        throw $.ioore(t2);
-      t2 = $.$and$n(canonicalTable[t2], $.JSInt_methods.$shl(1, ch & 15)) !== 0;
-    } else
-      t2 = false;
-    if (t2) {
-      if (i < 0 || i >= text.length)
-        throw $.ioore(i);
-      result.write$1(text[i]);
-    } else {
-      if (i < 0 || i >= text.length)
-        throw $.ioore(i);
-      if ($.$eq(text[i], " ") === true)
-        result.write$1("+");
-      else {
-        if (ch >= 55296 && ch < 56320) {
-          ++i;
-          nextCh = text.length === i ? 0 : t1.codeUnitAt$1(text, i);
-          if (nextCh >= 56320 && nextCh < 57344)
-            ch = 65536 + (ch - 55296 << 10 >>> 0) + (nextCh - 56320);
-          else
-            throw $.wrapException($.ArgumentError$("Malformed URI"));
-        }
-        for (t2 = $.JSArray_methods.get$iterator($.codepointsToUtf8([ch], 0, null)); t2.moveNext$0();)
-          result.write$1(byteToHex.call$1(t2.get$current()));
-      }
-    }
-  }
-  return result.toString$0(result);
-};
-
-$._uriEncode$bailout = function(state0, canonicalTable, text) {
-  var byteToHex, result, t1, i, ch, t2, nextCh;
-  byteToHex = new $._uriEncode_anon("0123456789ABCDEF");
-  result = $.StringBuffer$("");
-  for (t1 = $.getInterceptor$asx(text), i = 0; $.JSNumber_methods.$lt(i, t1.get$length(text)); ++i) {
-    ch = t1.codeUnitAt$1(text, i);
-    if (ch < 128) {
-      t2 = $.JSInt_methods.$shr(ch, 4);
-      if (t2 < 0 || t2 >= canonicalTable.length)
-        throw $.ioore(t2);
-      t2 = $.$and$n(canonicalTable[t2], $.JSInt_methods.$shl(1, ch & 15)) !== 0;
-    } else
-      t2 = false;
-    if (t2)
-      result.write$1(t1.$index(text, i));
-    else if ($.$eq(t1.$index(text, i), " ") === true)
-      result.write$1("+");
-    else {
-      if (ch >= 55296 && ch < 56320) {
-        ++i;
-        nextCh = $.$eq(t1.get$length(text), i) === true ? 0 : t1.codeUnitAt$1(text, i);
-        if (nextCh >= 56320 && nextCh < 57344)
-          ch = 65536 + (ch - 55296 << 10 >>> 0) + (nextCh - 56320);
-        else
-          throw $.wrapException($.ArgumentError$("Malformed URI"));
-      }
-      for (t2 = $.JSArray_methods.get$iterator($.codepointsToUtf8([ch], 0, null)); t2.moveNext$0();)
-        result.write$1(byteToHex.call$1(t2.get$current()));
-    }
-  }
-  return result.toString$0(result);
-};
-
-$._ListRange$ = function(source, offset, $length) {
-  var t1 = $length == null ? source.length - offset : $length;
-  t1 = new $._ListRange(source, offset, t1);
-  t1._ListRange$3(source, offset, $length);
-  return t1;
-};
-
-$._ListRangeIteratorImpl$ = function(_source, offset, _end) {
-  return new $._ListRangeIteratorImpl(_source, offset - 1, _end);
-};
-
-$._addToEncoding = function(offset, bytes, value, buffer) {
-  var t1, t2;
-  if (typeof value !== "number")
-    return $._addToEncoding$bailout(1, offset, bytes, value, buffer);
-  for (t1 = buffer.length; bytes > 0;) {
-    t2 = offset + bytes;
-    if (t2 < 0 || t2 >= t1)
-      throw $.ioore(t2);
-    buffer[t2] = (128 | value & 63) >>> 0;
-    value = $.JSNumber_methods.$shr(value, 6);
-    --bytes;
-  }
-  return value;
-};
-
-$._addToEncoding$bailout = function(state0, offset, bytes, value, buffer) {
-  var t1, t2, t3, t4;
-  for (t1 = buffer.length; bytes > 0;) {
-    t2 = offset + bytes;
-    t3 = $.getInterceptor$n(value);
-    t4 = t3.$and(value, 63);
-    if (t2 < 0 || t2 >= t1)
-      throw $.ioore(t2);
-    buffer[t2] = (128 | t4) >>> 0;
-    value = t3.$shr(value, 6);
-    --bytes;
-  }
-  return value;
-};
-
-$.codepointsToUtf8 = function(codepoints, offset, $length) {
-  var source, t1, encodedLength, t2, encoded, insertAt, insertAt0;
-  source = $._ListRange$(codepoints, offset, $length);
-  for (t1 = source.get$iterator(source), encodedLength = 0; t1.moveNext$0();) {
-    t2 = t1.get$current();
-    if (typeof t2 !== "number")
-      return $.codepointsToUtf8$bailout(1, t1, t2, source, encodedLength);
-    if (t2 < 0 || t2 > 1114111)
-      encodedLength += 3;
-    else if (t2 <= 127)
-      ++encodedLength;
-    else if (t2 <= 2047)
-      encodedLength += 2;
-    else if (t2 <= 65535)
-      encodedLength += 3;
-    else if (t2 <= 1114111)
-      encodedLength += 4;
-  }
-  encoded = $.List_List(encodedLength);
-  for (t1 = source.get$iterator(source), insertAt = 0; t1.moveNext$0();) {
-    t2 = t1.get$current();
-    if (typeof t2 !== "number")
-      return $.codepointsToUtf8$bailout(2, t1, t2, 0, encodedLength, insertAt, encoded);
-    if (t2 < 0 || t2 > 1114111) {
-      insertAt0 = insertAt + 3;
-      $.JSArray_methods.setRange$3(encoded, insertAt, insertAt0, [239, 191, 189]);
-      insertAt = insertAt0;
-    } else if (t2 <= 127) {
-      if (insertAt >= encodedLength)
-        throw $.ioore(insertAt);
-      encoded[insertAt] = t2;
-      ++insertAt;
-    } else if (t2 <= 2047) {
-      t2 = $._addToEncoding(insertAt, 1, t2, encoded);
-      if (typeof t2 !== "number")
-        throw $.iae(t2);
-      if (insertAt >= encodedLength)
-        throw $.ioore(insertAt);
-      encoded[insertAt] = (192 | 31 & t2) >>> 0;
-      insertAt += 2;
-    } else if (t2 <= 65535) {
-      t2 = $._addToEncoding(insertAt, 2, t2, encoded);
-      if (typeof t2 !== "number")
-        throw $.iae(t2);
-      if (insertAt >= encodedLength)
-        throw $.ioore(insertAt);
-      encoded[insertAt] = (224 | 15 & t2) >>> 0;
-      insertAt += 3;
-    } else if (t2 <= 1114111) {
-      t2 = $._addToEncoding(insertAt, 3, t2, encoded);
-      if (typeof t2 !== "number")
-        throw $.iae(t2);
-      if (insertAt >= encodedLength)
-        throw $.ioore(insertAt);
-      encoded[insertAt] = (240 | 7 & t2) >>> 0;
-      insertAt += 4;
-    }
-  }
-  return encoded;
-};
-
-$.codepointsToUtf8$bailout = function(state0, t1, t2, source, encodedLength, insertAt, encoded) {
-  switch (state0) {
-    case 0:
-      source = $._ListRange$(codepoints, offset, $length);
-      t1 = source.get$iterator(source);
-      encodedLength = 0;
-    case 1:
-      L0:
-        while (true)
-          switch (state0) {
-            case 0:
-              if (!t1.moveNext$0())
-                break L0;
-              t2 = t1.get$current();
-            case 1:
-              state0 = 0;
-              t3 = $.getInterceptor$n(t2);
-              if (t3.$lt(t2, 0) || t3.$gt(t2, 1114111))
-                encodedLength += 3;
-              else if (t3.$le(t2, 127))
-                ++encodedLength;
-              else if (t3.$le(t2, 2047))
-                encodedLength += 2;
-              else if (t3.$le(t2, 65535))
-                encodedLength += 3;
-              else if (t3.$le(t2, 1114111))
-                encodedLength += 4;
-          }
-      encoded = $.List_List(encodedLength);
-      t1 = source.get$iterator(source);
-      insertAt = 0;
-    case 2:
-      var t3, insertAt0;
-      L1:
-        while (true)
-          switch (state0) {
-            case 0:
-              if (!t1.moveNext$0())
-                break L1;
-              t2 = t1.get$current();
-            case 2:
-              state0 = 0;
-              t3 = $.getInterceptor$n(t2);
-              if (t3.$lt(t2, 0) || t3.$gt(t2, 1114111)) {
-                insertAt0 = insertAt + 3;
-                $.JSArray_methods.setRange$3(encoded, insertAt, insertAt0, [239, 191, 189]);
-                insertAt = insertAt0;
-              } else if (t3.$le(t2, 127)) {
-                if (insertAt >= encodedLength)
-                  throw $.ioore(insertAt);
-                encoded[insertAt] = t2;
-                ++insertAt;
-              } else if (t3.$le(t2, 2047)) {
-                t2 = $._addToEncoding(insertAt, 1, t2, encoded);
-                if (typeof t2 !== "number")
-                  throw $.iae(t2);
-                if (insertAt >= encodedLength)
-                  throw $.ioore(insertAt);
-                encoded[insertAt] = (192 | 31 & t2) >>> 0;
-                insertAt += 2;
-              } else if (t3.$le(t2, 65535)) {
-                t2 = $._addToEncoding(insertAt, 2, t2, encoded);
-                if (typeof t2 !== "number")
-                  throw $.iae(t2);
-                if (insertAt >= encodedLength)
-                  throw $.ioore(insertAt);
-                encoded[insertAt] = (224 | 15 & t2) >>> 0;
-                insertAt += 3;
-              } else if (t3.$le(t2, 1114111)) {
-                t2 = $._addToEncoding(insertAt, 3, t2, encoded);
-                if (typeof t2 !== "number")
-                  throw $.iae(t2);
-                if (insertAt >= encodedLength)
-                  throw $.ioore(insertAt);
-                encoded[insertAt] = (240 | 7 & t2) >>> 0;
-                insertAt += 4;
-              }
-          }
-      return encoded;
-  }
 };
 
 $.main = function() {
@@ -7395,7 +7130,6 @@ $.JSString_methods = $.JSString.prototype;
 $.C_CloseToken = new $.CloseToken();
 $.EventStreamProvider_loadend = new $.EventStreamProvider("loadend");
 $.Duration_0 = new $.Duration(0);
-$.List_KIf = Isolate.makeConstantList([0, 0, 26498, 1023, 65534, 34815, 65534, 18431]);
 $.EventStreamProvider_click = new $.EventStreamProvider("click");
 $.Expando__keyCount = 0;
 $.dispatchPropertyName = "_zzyzx";
@@ -7544,6 +7278,9 @@ $.set$innerHtml$x = function(receiver, value) {
 };
 $.set$length$asx = function(receiver, value) {
   return $.getInterceptor$asx(receiver).set$length(receiver, value);
+};
+$.set$value$x = function(receiver, value) {
+  return $.getInterceptor$x(receiver).set$value(receiver, value);
 };
 $.skip$1$ax = function(receiver, a0) {
   return $.getInterceptor$ax(receiver).skip$1(receiver, a0);

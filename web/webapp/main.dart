@@ -11,6 +11,7 @@ import "package:json_object/json_object.dart";
 
 part "config.dart";
 part "constants.dart";
+part "base64String.dart";
 
 File file;
 
@@ -29,20 +30,28 @@ void main() {
 }
 
 void getRestService(HttpConnect connect) {
-  String method = connect.request.queryParameters['method'];
-  String url = connect.request.queryParameters['resturl'];
-  String body = connect.request.queryParameters['body'];
+  var request = connect.request;
+  var stream = request.transform(new StringDecoder());
+  
+  stream.listen((value){
+    Map data = Json.parse(value);
+    String method = data['method'];
+    String url = data['resturl'];
+    Map authentication = data['authentication'];
+    Map body = data['body'];
 
-  Future<String>  result = getResponse(method, url, body);
- 
-  result.then( (json) {
-      print(json);
+    Future<String>  result = getResponse(method, url, authentication, body.toString());
+    
+//    result.then( (json) {
+//      print(json);
+//    });
+    
   });
+
  
 }
 
-Future<String> getResponse(String method, String url, String body) {
-print(body);
+Future<String> getResponse(String method, String url, Map authentication, String body) {
   Completer<String> jsonContent = new Completer<String>();
   HttpClient client = new HttpClient();
   var requestUri = new Uri.fromString(url);
@@ -50,14 +59,17 @@ print(body);
   var conn = client.openUrl(method, requestUri);
 
   conn.then ((HttpClientRequest request) {
-  
     request.headers.add(HttpHeaders.CONTENT_TYPE, Constants.CONTENT_TYPE_JSON);
-    request.headers.add("Authorization", Constants.CREDENTIAL_KERMIT);
+    // Add base64 authentication header
+    String base64 = Base64String.encode('${authentication["username"]}:${authentication["password"]}');
+    base64 = 'Basic $base64';
+    print(base64);
+    request.headers.add("Authorization",  base64);
     
     switch( method ) {
       case Constants.METHOD_GET: break;
       case Constants.METHOD_POST: 
-//        request.write(Json.stringify(body));
+        body = body.replaceAllMapped(new RegExp(r'\b\w+\b'), replaceWordwithQuotes);
         request.write(body);
         break;
     }
@@ -89,6 +101,11 @@ print(body);
   }); // HttpClient connection
 
    return jsonContent.future;
+}
+
+String replaceWordwithQuotes(Match match) {
+  String result = '"${match.group(0)}"';
+  return result; 
 }
 
 void show_result(HttpConnect connect) {

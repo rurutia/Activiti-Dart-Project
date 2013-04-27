@@ -36,13 +36,19 @@
        <div class="clear"></div>
        
        <div class="rest-input" id="rest-header-wrapper">
-          <h3>Headers (to be implemented, hard coded at this stage) </h3>
+          <div>
+             <h3 class="align-left">Authentication(Base64)</h3>
+             <button id="testAuthenticationBtn" class="align-left" style="margin-top:15px">example:kermit (demo only)</button>
+          </div>
+           <div class="clear"></div>
+          <label for="username">Username</label><input type="text" id="username" placeholder="e.g. kermit" />
+          <label for="password">Password</label><input type="password" id="password" placeholder="e.g. kermit" />          
        </div>
        
        <div class="rest-input" id="rest-body-wrapper">
           <div>
             <h3 class="align-left">Body</h3>
-            <button id="testRestBodyBtn" class="align-left" style="margin-top:10px">paste example(test only)</button>
+            <button id="testRestBodyBtn" class="align-left" style="margin-top:15px">example:kermit (demo only)</button>
           </div>
           <div class="clear"></div>
           <textarea id="rest-body" class="align-left" cols="50" rows="10" placeholder='{                                       "userId":"kermit",                     "password":"kermit"                                 }'></textarea>
